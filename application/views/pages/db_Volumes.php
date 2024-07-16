@@ -51,6 +51,9 @@
         .btn-delete:hover {
             background-color: #c82333;
         }
+        .btn-action {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -85,9 +88,13 @@
                         <td><?php echo $volume->date_at; ?></td>
                         <td><?php echo $volume->date_published; ?></td>
                         <td>
-                            
-                            <a href="<?php echo base_url('volume/db_editVolume/' . $volume->volumeid); ?>" class="btn btn-edit btn-sm">Edit</a>
-                            <a href="<?php echo base_url('volume/delete/' . $volume->volumeid); ?>" class="btn btn-delete btn-sm" onclick="return confirm('Are you sure you want to delete this volume?')">Delete</a>
+                        <?php if ($volume->isArchive == 0): ?>
+                            <a href="<?php echo base_url('volume/archiveVolume/' . $volume->volumeid); ?>" class="btn btn-edit btn-sm btn-action">Archive</a>
+                        <?php else: ?>
+                            <a href="<?php echo base_url('volume/unArchiveVolume/' . $volume->volumeid); ?>" class="btn btn-edit btn-sm btn-action">Unarchive</a>
+                        <?php endif; ?>
+                            <a href="<?php echo base_url('volume/db_editVolume/' . $volume->volumeid); ?>" class="btn btn-edit btn-sm btn-action">Edit</a>
+                            <a href="<?php echo base_url('volume/delete/' . $volume->volumeid); ?>" class="btn btn-delete btn-sm btn-action" onclick="return confirm('Are you sure you want to delete this volume?')">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -98,9 +98,19 @@ class Volume extends CI_Controller {
 
 
     public function delete($volumeid) {
-        // Delete the volume from the database
         $this->Volume_model->deleteVolume($volumeid);
-        // Redirect back to the volume list
+        redirect('volume/db_Volumes');
+    }
+
+    public function archiveVolume($volumeid) {
+        $this->load->model('Volume_model');
+        $this->Volume_model->archiveVolume($volumeid);
+        redirect('volume/db_Volumes');
+    }   
+
+    public function unArchiveVolume($volumeid) {
+        $this->load->model('Volume_model');
+        $this->Volume_model->unArchiveVolume($volumeid);
         redirect('volume/db_Volumes');
     }
     

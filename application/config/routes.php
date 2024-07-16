@@ -53,7 +53,6 @@ $route['pages/edit_author'] = 'pages/edit_author';
 
 $route['pages/editArticle/(:any)'] = 'pages/editArticle/$1';
 
-
 // Posts
 $route['posts/post_index'] = 'posts/post_index'; 
 $route['posts/create'] = 'posts/create';

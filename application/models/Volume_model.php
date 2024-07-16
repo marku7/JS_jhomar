@@ -33,10 +33,8 @@ class Volume_model extends CI_Model {
     }
 
     public function updatePublishedStatus($volumeid, $published) {
-        // Determine the value for date_published based on the published status
         $date_published = $published == 1 ? date('Y-m-d H:i:s') : null;
     
-        // Update the published status and date_published in the database
         $data = array(
             'published' => $published,
             'date_published' => $date_published
@@ -45,7 +43,19 @@ class Volume_model extends CI_Model {
         $this->db->where('volumeid', $volumeid);
         $this->db->update('Volume', $data);
     }
+    public function archiveVolume($volumeid) {
+        $this->db->where('volumeid', $volumeid);
+        $this->db->update('volume', array('isArchive' => 1));
     
+        return $this->db->affected_rows() > 0;
+    }
+    
+    public function unArchiveVolume($volumeid) {
+        $this->db->where('volumeid', $volumeid);
+        $this->db->update('volume', array('isArchive' => 0));
+    
+        return $this->db->affected_rows() > 0;
+    }
     
     
 
