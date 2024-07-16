@@ -16,13 +16,8 @@ class Article_model extends CI_Model {
         $this->db->join('authors', 'article_author.audid = authors.audid');
         $this->db->where('article_author.articleid', $articleId);
         $query = $this->db->get();
-        // Log the query result
-        error_log('Query Result for Article ID ' . $articleId . ': ' . print_r($query->row(), true));
         return $query->row(); // Assuming you're expecting only one author per article
     }
-    
-    
-    
 
     public function insertArticleAuthor($article_id, $author_id) {
         $data = array(
@@ -57,21 +52,33 @@ public function get_article_id() {
         return null; 
     }
 }
+
 public function get_article() {
-    $this->db->select('articles.articleid, articles.title, articles.slug, articles.abstract, articles.created_at, volume.vol_name, articles.doi, articles.keywords');
+    $this->db->select('
+        articles.articleid, 
+        articles.title, 
+        articles.slug, 
+        articles.abstract, 
+        articles.created_at, 
+        volume.vol_name,
+        volume.volumeid,
+        articles.doi,
+        articles.isPublished,
+        articles.keywords
+    ');
     $this->db->from('articles');
     $this->db->join('article_submission', 'articles.slug = article_submission.slug');
     $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left');
+    $this->db->where('articles.isPublished', 1);
+    $this->db->where('volume.isArchive', 0);
     $this->db->where('volume.published', 1);
-    $this->db->where('article_submission.payment', 1);
-    $this->db->where('article_submission.review', 1);
-    $this->db->where('article_submission.approved', 1);
-    $this->db->where('article_submission.published', 1);
-    $this->db->order_by('volume.vol_name', 'ASC'); // Order by volume.vol_name in ascending order
+    $this->db->order_by('volume.vol_name', 'ASC'); 
 
     $query = $this->db->get();
     return $query->result(); 
 }
+
+
 
 
 
@@ -231,6 +238,18 @@ public function update_article_submission($articleid, $articleData) {
     }
 }
 
+public function get_articles_by_volume($volumeid) {
+    $this->db->select('articles.*, authors.author_name, volume.vol_name');
+    $this->db->from('articles');
+    $this->db->join('article_author', 'articles.articleid = article_author.articleid');
+    $this->db->join('authors', 'article_author.audid = authors.audid');
+    $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left');
+    $this->db->where('articles.isPublished', 1);
+    $this->db->where('volume.volumeid', $volumeid);
+    $query = $this->db->get();
+    return $query->result_array();
+}
+
 
 public function get_all_articles() {
     $this->db->select('
@@ -259,8 +278,9 @@ public function get_all_articles() {
     $this->db->join('article_author', 'articles.articleid = article_author.articleid');
     $this->db->join('authors', 'article_author.audid = authors.audid');
     $this->db->join('article_submission', 'articles.slug = article_submission.slug');
-    $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left'); 
+    $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left');
     $this->db->where('volume.isArchive', 0);
+    $this->db->where('articles.isPublished', 1);
     $this->db->group_by('articles.articleid'); 
     $query = $this->db->get();
     return $query->result();

@@ -3,28 +3,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends CI_Controller {
 
-    public function __construct() {
-        parent::__construct();
-        $this->load->model('User_model'); 
-        $this->load->model('Article_model');
-        $this->load->model('Author_model');
-    }
-    public function index() {
-        // Retrieve article data
-        $articleData = $this->Article_model->get_article();
-    
-        // Loop through each article data to fetch author's name and add it to the article data
-        if (!empty($articleData)) {
-            foreach ($articleData as $article) {
-                $authorData = $this->Article_model->getAuthorByArticleId($article->articleid);
-                // Ensure that $authorData is not null before accessing its properties
-                $article->author_name = $authorData ? $authorData->author_name : 'Unknown Author';
+public function __construct() {
+    parent::__construct();
+    $this->load->model('User_model'); 
+    $this->load->model('Article_model');
+    $this->load->model('Author_model');
+    $this->load->model('Volume_model');
+}
+
+public function index() {
+    $volumes = $this->Volume_model->getVolumes();
+
+    foreach ($volumes as &$volume) {
+        $volume['articles'] = $this->Article_model->get_articles_by_volume($volume['volumeid']);
+        if (!empty($volume['articles'])) {
+            foreach ($volume['articles'] as &$article) {
+                $authorData = $this->Article_model->getAuthorByArticleId($article['articleid']);
+                $article['author_name'] = $authorData ? $authorData->author_name : 'Unknown Author';
             }
         }
-    
-        $data['articleData'] = $articleData; 
-        $this->load->view('home/home', $data);
     }
+
+    $data['volumes'] = $volumes;
+    $this->load->view('home/home', $data);
+}
+
     
     
     
@@ -212,6 +215,31 @@ class Home extends CI_Controller {
         }
     }
     
+    public function viewVolume($volumeid) {
+        $this->load->model('Article_model');
+        $this->load->model('Volume_model');
+        
+        $data['volume'] = $this->Volume_model->get_volume($volumeid);
+        
+        if (empty($data['volume'])) {
+            show_404();
+        }
+    
+        $data['articles'] = $this->Article_model->get_articles_by_volume($volumeid);
+    
+        // Loop through each article data to fetch author's name and add it to the article data
+        if (!empty($data['articles'])) {
+            foreach ($data['articles'] as &$article) {
+                $authorData = $this->Article_model->getAuthorByArticleId($article['articleid']);
+                $article['author_name'] = $authorData ? $authorData->author_name : 'Unknown Author';
+            }
+        }
+    
+        $data['title'] = $data['volume']['vol_name'];
+        
+        $data['volumes'] = $this->Volume_model->get_all_volumes();
+        $this->load->view('home/volume', $data);
+    }
     
     
     

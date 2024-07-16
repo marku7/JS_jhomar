@@ -7,6 +7,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['contact'] = 'home/contact';
 $route['post'] = 'home/post';
 $route['about'] = 'home/about';
+$route['volume'] = 'home/volume';
 
 // Routes for logged-in users
 $route['home_lp'] = 'home/home_lp';

@@ -331,6 +331,7 @@ class Pages extends Base_Controller {
                                 'abstract' => $abstract,
                                 'filename' => $user_filename,
                                 'doi' => $doi,
+                                'isPublished' => 0
                             );
     
                             $this->load->model('Article_model');

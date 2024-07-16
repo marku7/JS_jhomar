@@ -53,7 +53,8 @@ class Article extends CI_Controller {
                     'abstract' => $abstract,
                     'filename' => $user_filename,
                     'doi' => $doi,
-                    'volumeid' => $volume_id
+                    'volumeid' => $volume_id,
+                    'isPublished' => 0
                 );
     
                 $this->load->model('Article_model');
@@ -133,7 +134,8 @@ class Article extends CI_Controller {
                     'abstract' => $abstract,
                     'filename' => $user_filename,
                     'doi' => $doi,
-                    'volumeid' => $volume_id
+                    'volumeid' => $volume_id,
+                    'isPublished' => 0
                 );
     
                 $this->load->model('Article_model');
