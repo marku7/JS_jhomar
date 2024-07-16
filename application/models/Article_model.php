@@ -233,17 +233,38 @@ public function update_article_submission($articleid, $articleData) {
 
 
 public function get_all_articles() {
-    $this->db->select('articles.articleid, articles.title, articles.keywords, articles.abstract, articles.filename, article_submission.filename AS submission_filename, article_submission.payment, article_submission.date_paid, article_submission.review, article_submission.date_forwarded_review, article_submission.approved, article_submission.date_approved, article_submission.layout, article_submission.published, article_submission.date_published, article_submission.slug, authors.author_name, authors.email AS author_email, volume.vol_name AS volume_name'); // Include volume name
+    $this->db->select('
+        articles.articleid, 
+        MAX(articles.title) AS title, 
+        MAX(articles.keywords) AS keywords, 
+        MAX(articles.abstract) AS abstract, 
+        MAX(articles.isPublished) AS isPublished, 
+        MAX(articles.filename) AS filename, 
+        MAX(article_submission.filename) AS submission_filename, 
+        MAX(article_submission.payment) AS payment, 
+        MAX(article_submission.date_paid) AS date_paid, 
+        MAX(article_submission.review) AS review, 
+        MAX(article_submission.date_forwarded_review) AS date_forwarded_review, 
+        MAX(article_submission.approved) AS approved, 
+        MAX(article_submission.date_approved) AS date_approved, 
+        MAX(article_submission.layout) AS layout, 
+        MAX(article_submission.published) AS published, 
+        MAX(article_submission.date_published) AS date_published, 
+        MAX(article_submission.slug) AS slug, 
+        MAX(authors.author_name) AS author_name, 
+        MAX(authors.email) AS author_email, 
+        MAX(volume.vol_name) AS volume_name,
+    ');
     $this->db->from('articles');
     $this->db->join('article_author', 'articles.articleid = article_author.articleid');
     $this->db->join('authors', 'article_author.audid = authors.audid');
     $this->db->join('article_submission', 'articles.slug = article_submission.slug');
-    $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left'); // Assuming volumeid is the foreign key
+    $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left'); 
+    $this->db->where('volume.isArchive', 0);
     $this->db->group_by('articles.articleid'); 
     $query = $this->db->get();
     return $query->result();
 }
-
 public function searchArticles($searchQuery) {
     $this->db->like('title', $searchQuery);
     $this->db->or_like('keywords', $searchQuery);

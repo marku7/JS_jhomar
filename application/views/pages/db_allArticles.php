@@ -105,11 +105,6 @@
                 <th>Volume</th>
                 <th>Title</th>
                 <th>File</th>
-                <th>Payment</th>
-                <th>Date Paid</th>
-                <th>Review Status</th>
-                <th>Date Forwarded to Review</th>
-                <th>Approval Status</th>
                 <th>Date Approved</th>
                 <th>Publishing Status</th>
                 <th>Date Published</th>
@@ -118,7 +113,7 @@
         <tbody>
             <tr>
                 <td class="actions">
-                    <a href="<?php echo base_url('pages/db_authSubmission2') ?>" class="btn btn-darkgreen text-blue" target="_blank"><strong>ADD ARTICLE</strong></a>
+                    <a href="<?php echo base_url('pages/db_authSubmission2') ?>" class="btn btn-darkgreen text-blue"><strong>ADD ARTICLE</strong></a>
                 </td>
             </tr>
             <?php foreach ($submittedArticles as $article): ?>
@@ -138,11 +133,6 @@
                             No file uploaded
                         <?php endif; ?>
                     </td>
-                    <td><?= $article->payment ? 'Paid' : 'Not Paid' ?></td>
-                    <td><?= $article->date_paid ? date('Y-m-d', strtotime($article->date_paid)) : 'N/A' ?></td>
-                    <td><?= $article->review ? 'Reviewed' : 'Not Reviewed' ?></td>
-                    <td><?= $article->date_forwarded_review ? date('Y-m-d', strtotime($article->date_forwarded_review)) : 'N/A' ?></td>
-                    <td><?= $article->approved ? 'Approved' : 'Unapproved' ?></td>
                     <td><?= $article->date_approved ? date('Y-m-d', strtotime($article->date_approved)) : 'N/A' ?></td>
                     <td><?= $article->published ? 'Published' : 'Unpublished' ?></td>
                     <td><?= $article->date_published ? date('Y-m-d', strtotime($article->date_published)) : 'N/A' ?></td>

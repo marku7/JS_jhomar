@@ -217,7 +217,7 @@ class Pages extends Base_Controller {
         // Get user data
         $userData = $this->User_model->select_user_by_id($user_id);
         if (!$userData || !is_object($userData)) {
-            show_404(); // Or handle the case where $userData is not valid
+            show_404();
             return;
         }
     
