@@ -20,7 +20,8 @@ class Volume extends CI_Controller {
             $data = array(
                 'vol_name' => $this->input->post('vol_name'),
                 'description' => $this->input->post('description'),
-                'published' => 0 // Set default value of 'published' to 0
+                'published' => 0,
+                'isArchive' => 0
             );
     
             // Call the model to insert data into the database
