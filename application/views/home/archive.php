@@ -121,28 +121,38 @@
                     $hasArticles = false;
                     foreach ($articleData as $article): 
                         if ($article->volumeid == $volume['volumeid']): 
-                            $hasArticles = true; ?>
-                            <div class="post-preview">
-                                <a href="<?php echo site_url('home/post/'.$article->slug); ?>">
-                                    <h4 class="post-title"><?php echo $article->title; ?></h4>
-                                    <p><strong>DOI:</strong> <?php echo $article->doi; ?></p>
-                                    <p><strong>Keywords:</strong> <?php echo $article->keywords; ?></p>
-                                    <p class="post-subtitle"><?php echo isset($article->abstract) && strlen($article->abstract) > 100 ? substr($article->abstract, 0, 100) . '...' : $article->abstract; ?></p>
-                                </a>
-                                <p class="post-meta">
-                                    Author:
-                                    <span class="meta">
-                                        <small><a href="#!"><?php echo $article->author_name; ?><br></a> Published On: <?php echo date('F d, Y', strtotime($article->created_at)); ?></small>
-                                    </span>
-                                </p>
-                                <div class="d-flex justify-content-end mb-4">
-                                    <a class="btn btn-primary text-uppercase" href="<?php echo site_url('home/post/'.$article->slug); ?>"><small> Read More... </small></a>
-                                </div>
+                            $hasArticles = true;
+                    ?>
+                        <div class="post-preview">
+                            <a href="<?php echo site_url('home/post/'.$article->slug); ?>">
+                                <h4 class="post-title"><?php echo $article->title; ?></h4>
+                                <p><strong>DOI:</strong> <?php echo $article->doi; ?></p>
+                                <p><strong>Keywords:</strong> <?php echo $article->keywords; ?></p>
+                                <p class="post-subtitle"><?php echo isset($article->abstract) && strlen($article->abstract) > 100 ? substr($article->abstract, 0, 100) . '...' : $article->abstract; ?></p>
+                            </a>
+                            <p class="post-meta">
+                                <b>Author/s:</b>
+                                <span class="meta">
+                                    <?php 
+                                    $authorNames = array_map(function($author) {
+                                        return $author->author_name;
+                                    }, $article->authors);
+                                    echo implode(', ', $authorNames);
+                                    ?>
+                                    <br>
+                                    <small><b>Published On:</b> <?php echo date('F d, Y', strtotime($article->created_at)); ?></small>
+                                </span>
+                            </p>
+                            <div class="d-flex justify-content-end mb-4">
+                                <a class="btn btn-primary text-uppercase" href="<?php echo site_url('home/post/'.$article->slug); ?>"><small> Read More... </small></a>
                             </div>
-                            <hr class="my-4" />
-                        <?php endif; 
-                    endforeach; 
-                    if (!$hasArticles): ?>
+                        </div>
+                        <hr class="my-4" />
+                    <?php 
+                        endif; 
+                    endforeach;
+                    if (!$hasArticles):
+                    ?>
                         <p>No articles available for this volume.</p>
                     <?php endif; ?>
                 </div>
@@ -150,6 +160,7 @@
         </div>
     </div>
 </div>
+
 
 
     <!-- Footer-->

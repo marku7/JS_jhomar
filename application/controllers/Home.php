@@ -16,10 +16,20 @@ public function index() {
 
     foreach ($volumes as &$volume) {
         $volume['articles'] = $this->Article_model->get_articles_by_volume($volume['volumeid']);
+        
         if (!empty($volume['articles'])) {
+            $article_ids = array_column($volume['articles'], 'articleid');
+            $authors = $this->Article_model->getAuthorsByArticleIds($article_ids);
+
+            // Create a map of article IDs to their authors
+            $article_author_map = [];
+            foreach ($authors as $author) {
+                $article_author_map[$author->articleid][] = $author->author_name;
+            }
+
+            // Add authors to each article
             foreach ($volume['articles'] as &$article) {
-                $authorData = $this->Article_model->getAuthorByArticleId($article['articleid']);
-                $article['author_name'] = $authorData ? $authorData->author_name : 'Unknown Author';
+                $article['authors'] = isset($article_author_map[$article['articleid']]) ? $article_author_map[$article['articleid']] : [];
             }
         }
     }
@@ -28,9 +38,7 @@ public function index() {
     $this->load->view('home/home', $data);
 }
 
-    
-    
-    
+
     public function about() {
         $this->load->view('home/about');
     }
@@ -45,13 +53,14 @@ public function index() {
         } else {
             $articleData = $this->Article_model->get_latest_article();
         }
-
+    
         if ($articleData) {
-            // Loop through each article data to fetch author's name and add it to the article data
+            // Loop through each article data to fetch authors' names and add them to the article data
             foreach ($articleData as $article) {
-                $authorData = $this->Article_model->getAuthorByArticleId($article->articleid);
-                // Ensure that $authorData is not null before accessing its properties
-                $article->author_name = $authorData ? $authorData->author_name : 'Unknown Author';
+                $authorData = $this->Article_model->getAuthorsByArticleId($article->articleid);
+                $article->authors = array_map(function($author) {
+                    return $author->author_name;
+                }, $authorData);
             }
             $data['articleData'] = $articleData;
             $this->load->view('home/post', $data);
@@ -59,6 +68,7 @@ public function index() {
             echo "No article found.";
         }
     }
+    
     
 
     public function about_lp() {
@@ -137,7 +147,7 @@ public function index() {
             // Loop through each article data to fetch author's name and add it to the article data
             if (!empty($articleData)) {
                 foreach ($articleData as $article) {
-                    $authorData = $this->Article_model->getAuthorByArticleId($article->articleid);
+                    $authorData = $this->Article_model->getAuthorsByArticleId($article->articleid);
                     // Ensure that $authorData is not null before accessing its properties
                     $article->author_name = $authorData ? $authorData->author_name : 'Unknown Author';
                 }
@@ -165,7 +175,7 @@ public function index() {
             // Loop through each article data to fetch author's name and add it to the article data
             if (!empty($articleData)) {
                 foreach ($articleData as $article) {
-                    $authorData = $this->Article_model->getAuthorByArticleId($article->articleid);
+                    $authorData = $this->Article_model->getAuthorsByArticleId($article->articleid);
                     // Ensure that $authorData is not null before accessing its properties
                     $article->author_name = $authorData ? $authorData->author_name : 'Unknown Author';
                 }
@@ -218,36 +228,45 @@ public function index() {
     public function viewVolume($volumeid) {
         $this->load->model('Article_model');
         $this->load->model('Volume_model');
-        
+    
         $data['volume'] = $this->Volume_model->get_volume($volumeid);
-        
+    
         if (empty($data['volume'])) {
             show_404();
         }
     
-        $data['articles'] = $this->Article_model->get_articles_by_volume($volumeid);
+        $data['articles'] = $this->Article_model->get_articles_by_vol($volumeid);
     
-        // Loop through each article data to fetch author's name and add it to the article data
+        // Loop through each article data to fetch authors' names and add them to the article data
         if (!empty($data['articles'])) {
+            $article_ids = array_column($data['articles'], 'articleid');
+            $authors = $this->Article_model->getAuthorsByArticleIds($article_ids);
+    
+            // Create a map of article IDs to their authors
+            $article_author_map = [];
+            foreach ($authors as $author) {
+                $article_author_map[$author->articleid][] = $author->author_name;
+            }
+    
+            // Add authors to each article
             foreach ($data['articles'] as &$article) {
-                $authorData = $this->Article_model->getAuthorByArticleId($article['articleid']);
-                $article['author_name'] = $authorData ? $authorData->author_name : 'Unknown Author';
+                $article['authors'] = isset($article_author_map[$article['articleid']]) ? $article_author_map[$article['articleid']] : [];
             }
         }
     
         $data['title'] = $data['volume']['vol_name'];
-        
         $data['volumes'] = $this->Volume_model->get_all_volumes();
         $this->load->view('home/volume', $data);
     }
     
+
     public function archive() {
         $articleData = $this->Article_model->get_archive();
     
         if (!empty($articleData)) {
             foreach ($articleData as $article) {
-                $authorData = $this->Article_model->getAuthorByArticleId($article->articleid);
-                $article->author_name = $authorData ? $authorData->author_name : 'Unknown Author';
+                $authorData = $this->Article_model->getAuthorsByArticleId($article->articleid);
+                $article->authors = $authorData;
             }
         }
     
@@ -257,7 +276,5 @@ public function index() {
         $data['volumes'] = $volumes;
         $this->load->view('home/archive', $data);
     }
-    
-    
     
 }

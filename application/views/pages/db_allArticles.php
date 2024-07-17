@@ -123,7 +123,7 @@
                         <a href="<?= base_url('pages/editArticle/' . $article->articleid); ?>" class="btn-update" style="background-color: #28a745; border-color: #28a745;">Update</a><br><br>
                         <a href="#" onclick="confirmDelete('<?= $article->articleid; ?>')" class="btn btn-danger btn-delete" style="background-color: #dc3545; border-color: #dc3545;">Delete</a>
                     </td>
-                    <td><?= $article->author_name ?></td>
+                    <td><?= implode(', ', $article->author_names) ?></td>
                     <td><?= $article->volume_name ?></td>
                     <td><?= strlen($article->title) > 20 ? substr($article->title, 0, 20) . '...' : $article->title ?></td>
                     <td>
