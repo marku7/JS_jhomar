@@ -93,6 +93,14 @@
             <option value="<?php echo $volume['volumeid']; ?>"><?php echo $volume['vol_name']; ?></option>
         <?php endforeach; ?>
     </select>
+
+    <label for="coauthor">Co-author:</label>
+        <select id="coauthor" name="coauthor_id" class="form-control">
+            <option value="">None</option>
+            <?php foreach ($authors as $author): ?>
+                <option value="<?php echo $author['audid']; ?>"><?php echo $author['author_name']; ?></option>
+            <?php endforeach; ?>
+        </select>
     
     <label for="file">Upload File:</label>
     <input type="file" id="file" name="file" accept=".pdf" class="form-control">

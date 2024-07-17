@@ -40,7 +40,7 @@ class Pages extends Base_Controller {
     
             // Fetch articles and pass them to the view
             $info['submittedArticles'] = $this->Article_model->get_all_articles();
-    
+            
             $this->load_view2('db_allArticles', $info);
         } else {
             show_404();
@@ -226,6 +226,10 @@ class Pages extends Base_Controller {
         $this->load->model('Volume_model');
         $volumes = $this->Volume_model->getVolumes();
         $info['volumes'] = $volumes;
+
+        $this->load->model('Author_model');
+        $authors = $this->Author_model->get_authors();
+        $info['authors'] = $authors;
     
         // Check if the user has an author profile
         $authorData = $this->Author_model->getAuthorByUserId($user_id);
@@ -237,9 +241,6 @@ class Pages extends Base_Controller {
             redirect('pages/db_AuthorsProfile');
         }
     }
-    
-    
-    
     
 
     public function edit_article($aricleId, $page = 'pages/edit_article') {
