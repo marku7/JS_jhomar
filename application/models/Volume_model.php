@@ -68,4 +68,14 @@ class Volume_model extends CI_Model {
         $query = $this->db->get_where('volume', array('volumeid' => $volumeid, 'isArchive' => 0));
         return $query->row_array();
     } 
+
+    public function getArchivedVolumes() {
+        $this->db->select('volumeid, vol_name');
+        $this->db->from('volume');
+        $this->db->where('isArchive', 1);
+        $this->db->order_by('vol_name', 'ASC'); 
+    
+        $query = $this->db->get();
+        return $query->result_array(); 
+    }
 }

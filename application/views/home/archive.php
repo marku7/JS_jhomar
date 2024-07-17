@@ -60,6 +60,7 @@
                     <div class="site-heading text-center">
                         <h1>CENTRAL MINDANAO UNIVERSITY</h1>
                         <span class="subheading">Journal of Science</span>
+                        <h4>Archives</h4>
                     </div>
                 </div>
             </div>
@@ -110,43 +111,46 @@
             color: black; /* Ensure button text color is black */
         }
     </style>
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <?php foreach ($volumes as $volume): ?>
-                    <div id="volume-<?php echo $volume['volumeid']; ?>" class="volume-section">
-                        <h1><a href="<?php echo site_url('home/viewVolume/'.$volume['volumeid']); ?>" ><?php echo $volume['vol_name']; ?></a></h1>
-                        <?php if (!empty($volume['articles'])): ?>
-                            <?php 
-                            $background_colors = array('#F4F4F4', '#EAEAEA', '#F0F0F0', '#DDDDDD', '#CCCCCC');
-                            foreach ($volume['articles'] as $key => $article): ?>
-                                <div class="post-preview" style="background-color: <?php echo $background_colors[$key % count($background_colors)]; ?>;">
-                                    <a href="<?php echo site_url('home/post/'.$article['slug']); ?>" class="post-link">
-                                        <div class="post-content">
-                                            <h2 class="post-title"><?php echo $article['title']; ?></h2>
-                                            <h3 class="post-subtitle">
-                                                <?php echo isset($article['abstract']) && strlen($article['abstract']) > 100 ? substr($article['abstract'], 0, 100) . '...' : $article['abstract']; ?>
-                                            </h3>
-                                            <p class="post-meta">
-                                                Author: <a href="#!"><?php echo $article['author_name']; ?></a><br> Published on: <?php echo date('F d, Y', strtotime($article['created_at'])); ?>
-                                            </p>
-                                        </div>
-                                    </a>
-                                    <div class="d-flex justify-content-end mb-4">
-                                        <a class="btn btn-primary text-uppercase" href="<?php echo site_url('home/post/'.$article['slug']); ?>">Read More...</a>
-                                    </div>
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <?php foreach ($volumes as $volume): ?>
+                <div id="volume-<?php echo $volume['volumeid']; ?>" class="volume-section">
+                    <h1><?php echo $volume['vol_name']; ?></h1>
+                    <?php 
+                    $hasArticles = false;
+                    foreach ($articleData as $article): 
+                        if ($article->volumeid == $volume['volumeid']): 
+                            $hasArticles = true; ?>
+                            <div class="post-preview">
+                                <a href="<?php echo site_url('home/post/'.$article->slug); ?>">
+                                    <h4 class="post-title"><?php echo $article->title; ?></h4>
+                                    <p><strong>DOI:</strong> <?php echo $article->doi; ?></p>
+                                    <p><strong>Keywords:</strong> <?php echo $article->keywords; ?></p>
+                                    <p class="post-subtitle"><?php echo isset($article->abstract) && strlen($article->abstract) > 100 ? substr($article->abstract, 0, 100) . '...' : $article->abstract; ?></p>
+                                </a>
+                                <p class="post-meta">
+                                    Author:
+                                    <span class="meta">
+                                        <small><a href="#!"><?php echo $article->author_name; ?><br></a> Published On: <?php echo date('F d, Y', strtotime($article->created_at)); ?></small>
+                                    </span>
+                                </p>
+                                <div class="d-flex justify-content-end mb-4">
+                                    <a class="btn btn-primary text-uppercase" href="<?php echo site_url('home/post/'.$article->slug); ?>"><small> Read More... </small></a>
                                 </div>
-                                <!-- Divider-->
-                                <hr class="my-4" />
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No articles available for this volume.</p>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+                            </div>
+                            <hr class="my-4" />
+                        <?php endif; 
+                    endforeach; 
+                    if (!$hasArticles): ?>
+                        <p>No articles available for this volume.</p>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
+</div>
+
 
     <!-- Footer-->
     <footer class="border-top">

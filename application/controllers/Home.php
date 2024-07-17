@@ -241,6 +241,22 @@ public function index() {
         $this->load->view('home/volume', $data);
     }
     
+    public function archive() {
+        $articleData = $this->Article_model->get_archive();
+    
+        if (!empty($articleData)) {
+            foreach ($articleData as $article) {
+                $authorData = $this->Article_model->getAuthorByArticleId($article->articleid);
+                $article->author_name = $authorData ? $authorData->author_name : 'Unknown Author';
+            }
+        }
+    
+        $volumes = $this->Volume_model->getArchivedVolumes();
+    
+        $data['articleData'] = $articleData; 
+        $data['volumes'] = $volumes;
+        $this->load->view('home/archive', $data);
+    }
     
     
     

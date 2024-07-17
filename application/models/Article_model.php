@@ -149,7 +149,27 @@ public function getSubmittedArticlesByUserId($user_id) {
 }
 
 
+public function get_archive() {
+    $this->db->select('
+        articles.articleid, 
+        articles.title, 
+        articles.slug, 
+        articles.abstract, 
+        articles.created_at, 
+        volume.vol_name,
+        volume.volumeid,
+        articles.doi, 
+        articles.keywords
+    ');
+    $this->db->from('articles');
+    $this->db->join('article_submission', 'articles.slug = article_submission.slug');
+    $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left');
+    $this->db->where('volume.isArchive', 1);
+    $this->db->order_by('volume.vol_name', 'ASC'); 
 
+    $query = $this->db->get();
+    return $query->result(); 
+}
 
 public function getArticle() {
     $query = $this->db->get('articles');
