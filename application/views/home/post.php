@@ -44,30 +44,35 @@
 
     <!-- Page Header-->
     <header class="masthead" style="background-image: url('<?php echo base_url('assets/img/download.jpg'); ?>')">
-        <div class="container position-relative px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
-                    <div class="post-heading">
-                        <?php foreach($articleData as $article) : ?>
-                            <h1><?php echo $article->title; ?></h1>
-                            <span class="meta">
-                                Author/s:
-                                <small>
-                                    <?php if (!empty($article->authors)): ?>
-                                        <?php foreach ($article->authors as $index => $author_name): ?>
-                                            <a href="#!"><?php echo $author_name; ?></a><?php echo $index < count($article->authors) - 1 ? ', ' : ''; ?>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <a href="#!">Unknown Author</a>
-                                    <?php endif; ?>
-                                </small> 
-                                <br>Date: <?php echo date('F d, Y', strtotime($article->created_at)); ?>
-                            </span>
-                        <?php endforeach; ?>
+    <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="post-heading">
+                <?php foreach($articleData as $article) : ?>
+                    <h1><?php echo $article->title; ?></h1>
+                    <span class="meta">
+                        Author/s:
+                        <small>
+                            <?php if (!empty($article->authors)): ?>
+                                <?php foreach ($article->authors as $index => $author_name): ?>
+                                    <a href="#!"><?php echo $author_name; ?></a><?php echo $index < count($article->authors) - 1 ? ', ' : ''; ?>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <a href="#!">Unknown Author</a>
+                            <?php endif; ?>
+                        </small> 
+                        <br>Date: <?php echo date('F d, Y', strtotime($article->created_at)); ?>
+                    </span>
+                    <div class="article-abstract mt-4">
+                        <h5>Abstract</h5>
+                        <p><?php echo $article->abstract; ?></p>
                     </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
+    </div>
+</div>
+
     </header>
 
     <!-- Post Content-->
