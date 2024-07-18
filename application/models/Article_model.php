@@ -343,7 +343,6 @@ public function get_all_articles() {
     $this->db->join('article_submission', 'articles.slug = article_submission.slug');
     $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left');
     $this->db->where('volume.isArchive', 0);
-    $this->db->where('articles.isPublished', 1);
     $this->db->group_by('articles.articleid'); 
     $query = $this->db->get();
     return $query->result();
