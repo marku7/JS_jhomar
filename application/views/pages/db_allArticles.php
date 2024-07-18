@@ -105,8 +105,7 @@
                 <th>Volume</th>
                 <th>Title</th>
                 <th>File</th>
-                <th>Date Approved</th>
-                <th>Publishing Status</th>
+                <th>Keywords</th>
                 <th>Date Published</th>
             </tr>
         </thead>
@@ -133,8 +132,7 @@
                             No file uploaded
                         <?php endif; ?>
                     </td>
-                    <td><?= $article->date_approved ? date('Y-m-d', strtotime($article->date_approved)) : 'N/A' ?></td>
-                    <td><?= $article->published ? 'Published' : 'Unpublished' ?></td>
+                    <td><?= strlen($article->keywords) > 20 ? substr($article->keywords, 0, 20) . '...' : $article->keywords ?></td>
                     <td><?= $article->date_published ? date('Y-m-d', strtotime($article->date_published)) : 'N/A' ?></td>
                 </tr>
             <?php endforeach; ?>

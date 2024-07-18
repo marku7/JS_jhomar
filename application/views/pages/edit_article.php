@@ -6,23 +6,22 @@
     <title>Edit Article</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-    .status-button {
-        margin-right: 10px;
-        margin-bottom: 10px;
-    }
-    .active-status {
-        background-color: #28a745;
-        color: #fff;
-    }
-    .card {
-        margin: 20px auto; /* Center the card horizontally */
-        max-width: 500px; /* Set a maximum width for the card */
-        padding: 20px; /* Add padding for better spacing */
-        border-radius: 10px; /* Add rounded corners */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-    }
-</style>
-
+        .status-button {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .active-status {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .card {
+            margin: 20px auto;
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -32,10 +31,9 @@
             <form action="<?= base_url('pages/updateArticle') ?>" method="post">
                 <input type="hidden" name="articleid" value="<?= $article->articleid ?>">
                 <div class="form-group">
-    <label for="title">Title:</label>
-    <input type="text" class="form-control" id="title" name="title" value="<?= $article->title ?>" readonly>
-</div>
-
+                    <label for="title">Title:</label>
+                    <input type="text" class="form-control" id="title" name="title" value="<?= $article->title ?>" readonly>
+                </div>
 
                 <!-- Payment Status -->
                 <div class="form-group">

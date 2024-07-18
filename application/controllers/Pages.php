@@ -698,7 +698,7 @@ class Pages extends Base_Controller {
 
     public function updateArticle() {
         $this->load->model('Article_model');
-
+    
         // Fetch the article ID from the form
         $articleid = $this->input->post('articleid');
         
@@ -711,10 +711,17 @@ class Pages extends Base_Controller {
             'approved' => $this->input->post('approved') ? 1 : 0,
             'published' => $this->input->post('published') ? 1 : 0
         );
-
-        // Update the article
+    
+        // Update the article submission data
         $result = $this->Article_model->update_article_submission($articleid, $articleData);
-
+        
+        // Check if the article should be published or unpublished
+        if ($this->input->post('published')) {
+            $this->Article_model->publishArticle($articleid);
+        } else {
+            $this->Article_model->unPublishArticle($articleid);
+        }
+        
         // Redirect to the articles list page
         if ($result) {
             redirect('pages/db_allArticles');
@@ -723,6 +730,7 @@ class Pages extends Base_Controller {
         }
     }
     
+
     
     public function db_authorList() {
         $data['authors'] = $this->Author_model->get_all_authors();

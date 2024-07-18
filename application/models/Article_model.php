@@ -408,5 +408,20 @@ public function editArticle($slug) {
     $query = $this->db->get('articles');
     return $query->row();
 }
+
+public function publishArticle($articleid) {
+    $this->db->where('articleid', $articleid);
+    $this->db->update('articles', array('isPublished' => 1));
+
+    return $this->db->affected_rows() > 0;
 }
 
+
+public function unPublishArticle($articleid) {
+    $this->db->where('articleid', $articleid);
+    $this->db->update('articles', array('isPublished' => 0));
+
+    return $this->db->affected_rows() > 0;
+}
+
+}
