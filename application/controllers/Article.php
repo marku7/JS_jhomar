@@ -19,6 +19,7 @@ class Article extends CI_Controller {
             $this->form_validation->set_rules('title', 'Title', 'required');
             $this->form_validation->set_rules('keywords', 'Keywords', 'required');
             $this->form_validation->set_rules('abstract', 'Abstract', 'required');
+        
     
             if ($this->form_validation->run() == TRUE) {
                 $user_filename = $this->uploadFile();
@@ -33,7 +34,7 @@ class Article extends CI_Controller {
                 $doi = $doi_prefix . ':' . $unique_identifier;
     
                 $volume_id = $this->input->post('volume_id');
-                $coauthor_id = $this->input->post('coauthor_id');
+                $coauthor_ids = $this->input->post('coauthor_id'); // This will be an array of co-author IDs
     
                 // Get the user ID of the author who submitted the article
                 $user_id = $this->session->userdata('UserLoginSession')['userid'] ?? null;
@@ -42,7 +43,6 @@ class Article extends CI_Controller {
                 $this->load->model('Author_model');
                 $author_id = $this->Author_model->getAuthorIdByUserId($user_id);
     
-                
                 if (!$author_id) {
                     // Handle the case where author_id is not found
                     $this->session->set_flashdata('error', 'Author ID not found.');
@@ -64,13 +64,16 @@ class Article extends CI_Controller {
                 $article_id = $this->Article_model->insertarticle($data); // Get the article ID
     
                 if ($article_id) {
-                    // Insert into article_author table
+                    // Insert the main author (the one who posted the article) into the article_author table
                     $this->Article_model->insertArticleAuthor($article_id, $author_id);
-                    
-                    if (!empty($coauthor_id)) {
-                        $this->Article_model->insertArticleAuthor($article_id, $coauthor_id);
+    
+                    // Insert additional co-authors if any
+                    if (!empty($coauthor_ids)) {
+                        foreach ($coauthor_ids as $coauthor_id) {
+                            $this->Article_model->insertArticleAuthor($article_id, $coauthor_id);
+                        }
                     }
-
+    
                     // Insert into article_submission table
                     $submission_data = array(
                         'auid' => $author_id,
@@ -97,9 +100,17 @@ class Article extends CI_Controller {
                     $this->session->set_flashdata('error', 'Failed to submit article.');
                     redirect(base_url('article/submitForm'));
                 }
+            } else {
+                // Output validation errors
+                echo "Validation errors: ";
+                print_r($this->form_validation->error_array());
             }
+        } else {
+            echo "Request method is not POST.";
         }
     }
+    
+    
 
     public function submitNow2() {
         if ($_SERVER["REQUEST_METHOD"] == 'POST') {
