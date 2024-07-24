@@ -28,6 +28,8 @@ class Volume_model extends CI_Model {
         return $this->db->get('Volume')->result();
     }
 
+    
+
     public function getVolumes() {
         $this->db->where('isArchive', 0);
         return $this->db->get('Volume')->result_array();

@@ -114,7 +114,7 @@
                             <p class="post-subtitle"><?php echo isset($article['abstract']) && strlen($article['abstract']) > 100 ? substr($article['abstract'], 0, 100) . '...' : $article['abstract']; ?></p>
                         </a>
                         <p class="post-meta">
-                            Author/s:
+                        Author/s:
                             <span class="meta">
                                 <small>
                                     <?php foreach ($article['authors'] as $author_name): ?>
