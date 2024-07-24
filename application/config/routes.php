@@ -53,6 +53,8 @@ $route['pages/edit_author'] = 'pages/edit_author';
 $route['pages/edit_author/(:num)'] = 'pages/edit_author/$1';
 $route['pages/edit/(:num)'] = 'pages/edit/$1';
 $route['pages/editArticle/(:any)'] = 'pages/editArticle/$1';
+$route['home/archivedVol/(:num)'] = 'home/archivedVol/$1';
+$route['home/viewVolumeArchive/(:num)'] = 'home/viewVolumeArchive/$1';
 
 // Posts
 $route['posts/post_index'] = 'posts/post_index'; 

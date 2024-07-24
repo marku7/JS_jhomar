@@ -32,15 +32,15 @@
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="<?php echo base_url(); ?>">Home</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle px-lg-3 py-3 py-lg-4" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Volumes
+                            Archived Volumes
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <?php foreach ($volumes as $volume): ?>
-                                <li><a class="dropdown-item" href="#volume-<?php echo $volume['volumeid']; ?>"><?php echo $volume['vol_name']; ?></a></li>
+                                <li><a class="dropdown-item" href="<?php echo site_url('home/viewVolumeArchive/'.$volume['volumeid']); ?>"><?php echo $volume['vol_name']; ?></a></li>
                             <?php endforeach; ?>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="<?php echo base_url('home/archive'); ?>">Archives</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="<?php echo base_url('home/archive'); ?>">Archive</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="<?php echo base_url('home/about'); ?>">About</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="<?php echo base_url('home/contact'); ?>">Contact</a></li>
                 </ul>
