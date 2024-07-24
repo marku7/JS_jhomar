@@ -33,6 +33,12 @@ class Volume_model extends CI_Model {
         return $this->db->get('Volume')->result_array();
     }
 
+    public function getVolumesHome() {
+        $this->db->where('isArchive', 0);
+        $this->db->where('published', 1);
+        return $this->db->get('Volume')->result_array();
+    }
+
     public function updatePublishedStatus($volumeid, $published) {
         $date_published = $published == 1 ? date('Y-m-d H:i:s') : null;
     

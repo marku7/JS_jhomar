@@ -12,7 +12,7 @@ public function __construct() {
 }
 
 public function index() {
-    $volumes = $this->Volume_model->getVolumes();
+    $volumes = $this->Volume_model->getVolumesHome();
 
     foreach ($volumes as &$volume) {
         $volume['articles'] = $this->Article_model->get_articles_by_volume($volume['volumeid']);
