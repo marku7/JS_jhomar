@@ -36,7 +36,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <?php foreach ($volumes as $volume): ?>
-                                <li><a class="dropdown-item" href="#volume-<?php echo $volume['volumeid']; ?>"><?php echo $volume['vol_name']; ?></a></li>
+                                <li><a class="dropdown-item" href="<?php echo site_url('home/viewVolume/'.$volume['volumeid']); ?>"><?php echo $volume['vol_name']; ?></a></li>
                             <?php endforeach; ?>
                         </ul>
                     </li>

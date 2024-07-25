@@ -82,7 +82,7 @@ class Volume_model extends CI_Model {
     } 
 
     public function getArchivedVolumes() {
-        $this->db->select('volumeid, vol_name');
+        $this->db->select('volumeid, vol_name, description, date_published');
         $this->db->from('volume');
         $this->db->where('isArchive', 1);
         $this->db->order_by('vol_name', 'ASC'); 

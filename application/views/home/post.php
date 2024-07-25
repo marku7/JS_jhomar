@@ -67,6 +67,9 @@
                         <h5>Abstract</h5>
                         <p><?php echo $article->abstract; ?></p>
                     </div>
+                    <div>
+                    <a href="##"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download Article</a>
+                    </div>
                 <?php endforeach; ?>
             </div>
         </div>

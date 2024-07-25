@@ -21,6 +21,21 @@
         .navbar-nav .nav-link:hover {
             color: #0056b3 !important; /* Optional: change color on hover */
         }
+        .volume-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            transition: transform 0.3s ease;
+        }
+        .volume-section:hover {
+            transform: scale(1.02);
+        }
+        .volume-link {
+            text-decoration: none;
+            color: inherit;
+        }
     </style>
 </head>
 <body>
@@ -68,100 +83,21 @@
     </header>
 
     <!-- Main Content-->
-    <style>
-        .post-preview {
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 20px;
-            padding: 20px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .post-link {
-            display: block;
-            color: inherit;
-            text-decoration: none;
-            transition: transform 0.3s ease;
-        }
-
-        .post-link:hover {
-            transform: scale(1.02);
-        }
-
-        .post-content {
-            color: black; /* Ensure text color is black */
-        }
-
-        .post-content h2,
-        .post-content h3,
-        .post-content p,
-        .post-content a {
-            color: black; /* Ensure all text elements are black */
-        }
-
-        .post-preview:hover {
-            transform: scale(1.02);
-        }
-
-        .btn {
-            display: inline-block;
-            margin-top: 10px;
-            color: black; /* Ensure button text color is black */
-        }
-    </style>
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
             <?php foreach ($volumes as $volume): ?>
                 <div id="volume-<?php echo $volume['volumeid']; ?>" class="volume-section">
-                    <h1><?php echo $volume['vol_name']; ?></h1>
-                    <?php 
-                    $hasArticles = false;
-                    foreach ($articleData as $article): 
-                        if ($article->volumeid == $volume['volumeid']): 
-                            $hasArticles = true;
-                    ?>
-                        <div class="post-preview">
-                            <a href="<?php echo site_url('home/post/'.$article->slug); ?>">
-                                <h4 class="post-title"><?php echo $article->title; ?></h4>
-                                <p><strong>DOI:</strong> <?php echo $article->doi; ?></p>
-                                <p><strong>Keywords:</strong> <?php echo $article->keywords; ?></p>
-                                <p class="post-subtitle"><?php echo isset($article->abstract) && strlen($article->abstract) > 100 ? substr($article->abstract, 0, 100) . '...' : $article->abstract; ?></p>
-                            </a>
-                            <p class="post-meta">
-                                <b>Author/s:</b>
-                                <span class="meta">
-                                    <?php 
-                                    $authorNames = array_map(function($author) {
-                                        return $author->author_name;
-                                    }, $article->authors);
-                                    echo implode(', ', $authorNames);
-                                    ?>
-                                    <br>
-                                    <small><b>Published On:</b> <?php echo date('F d, Y', strtotime($article->created_at)); ?></small>
-                                </span>
-                            </p>
-                            <div class="d-flex justify-content-end mb-4">
-                                <a class="btn btn-primary text-uppercase" href="<?php echo site_url('home/post/'.$article->slug); ?>"><small> Read More... </small></a>
-                            </div>
-                        </div>
-                        <hr class="my-4" />
-                    <?php 
-                        endif; 
-                    endforeach;
-                    if (!$hasArticles):
-                    ?>
-                        <p>No articles available for this volume.</p>
-                    <?php endif; ?>
+                    <a href="<?php echo site_url('home/viewVolumeArchive/'.$volume['volumeid']); ?>" class="volume-link">
+                        <h2><?php echo $volume['vol_name']; ?></h2>
+                        <p><?php echo $volume['description']; ?></p>
+                        <small><b>Date Published:</b> <?php echo date('F d, Y', strtotime($volume['date_published'])); ?></small>
+                    </a>
                 </div>
             <?php endforeach; ?>
         </div>
     </div>
 </div>
-
-
 
     <!-- Footer-->
     <footer class="border-top">

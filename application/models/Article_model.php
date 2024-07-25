@@ -416,6 +416,17 @@ public function publishArticle($articleid) {
     return $this->db->affected_rows() > 0;
 }
 
+public function updateArticlesPublishedStatus($volumeid, $published) {
+    $this->db->where('volumeid', $volumeid);
+    $this->db->update('articles', array('isPublished' => $published));
+
+    // Log the number of affected rows for debugging
+    $affected_rows = $this->db->affected_rows();
+    log_message('debug', 'Number of articles updated: ' . $affected_rows);
+
+    return $affected_rows > 0;
+}
+
 
 public function unPublishArticle($articleid) {
     $this->db->where('articleid', $articleid);

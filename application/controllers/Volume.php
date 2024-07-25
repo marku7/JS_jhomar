@@ -3,6 +3,7 @@ class Volume extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Volume_model');
+        $this->load->model('Article_model');
     }
 
     public function create() {
@@ -51,22 +52,24 @@ class Volume extends CI_Controller {
         }
     }
 
-
-
     public function toggle_published($volumeid) {
+
+        
         // Get the current published status from the database
         $volume = $this->Volume_model->getVolumeById($volumeid);
-    
+
         // Determine the new published status based on the current status
         $new_published = $volume->published == 1 ? 0 : 1;
-    
+
         // Update the published status in the database
         $this->Volume_model->updatePublishedStatus($volumeid, $new_published);
-    
+
+        // Publish or unpublish all articles in the volume
+        $this->Article_model->updateArticlesPublishedStatus($volumeid, $new_published);
+
         // Redirect back to the volume list
         redirect('volume/db_Volumes');
     }
-    
 
     public function db_Volumes() {
         // Display list of volumes
