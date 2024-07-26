@@ -508,7 +508,6 @@ class Pages extends Base_Controller {
                 'volume_id' => $this->input->post('volume_id') // Add volume_id here
             );
     
-            // Get submission id based on slug
             $submission_id = $this->Article_model->getSubmissionIdBySlug($slug);
     
             if ($submission_id) {
@@ -518,7 +517,7 @@ class Pages extends Base_Controller {
             $this->session->set_flashdata('success', 'Updating Successful!');
             redirect(base_url('pages/db_allArticles'));
         } else {
-            return $this->db_AdminUpdate($slug); // Correct method name for redirecting to the update page
+            return $this->db_AdminUpdate($slug);
         }
     }
     
