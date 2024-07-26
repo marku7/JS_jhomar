@@ -25,21 +25,23 @@ class Volume_model extends CI_Model {
     }
     
     public function getAllVolumes() {
+        $this->db->order_by('date_at', 'DESC');
         return $this->db->get('Volume')->result();
     }
-
     
-
     public function getVolumes() {
         $this->db->where('isArchive', 0);
+        $this->db->order_by('date_published', 'DESC');
         return $this->db->get('Volume')->result_array();
     }
-
+    
     public function getVolumesHome() {
         $this->db->where('isArchive', 0);
         $this->db->where('published', 1);
+        $this->db->order_by('date_published', 'DESC'); 
         return $this->db->get('Volume')->result_array();
     }
+    
 
     public function updatePublishedStatus($volumeid, $published) {
         $date_published = $published == 1 ? date('Y-m-d H:i:s') : null;
@@ -68,11 +70,13 @@ class Volume_model extends CI_Model {
 
     public function get_all_volumes() {
         $query = $this->db->get_where('volume', array('isArchive' => 0, 'published' => 1));
+        $this->db->order_by('date_published', 'DESC');
         return $query->result_array();
     }
     
     public function get_volume($volumeid) {
         $query = $this->db->get_where('volume', array('volumeid' => $volumeid, 'isArchive' => 0));
+        $this->db->order_by('date_at', 'DESC');
         return $query->row_array();
     } 
 
@@ -85,7 +89,7 @@ class Volume_model extends CI_Model {
         $this->db->select('volumeid, vol_name, description, date_published');
         $this->db->from('volume');
         $this->db->where('isArchive', 1);
-        $this->db->order_by('vol_name', 'ASC'); 
+        $this->db->order_by('date_at', 'DESC');
     
         $query = $this->db->get();
         return $query->result_array(); 

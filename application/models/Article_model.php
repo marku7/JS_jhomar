@@ -91,14 +91,10 @@ public function get_article() {
     $this->db->where('articles.isPublished', 1);
     $this->db->where('volume.isArchive', 0);
     $this->db->where('volume.published', 1);
-    $this->db->order_by('volume.vol_name', 'ASC'); 
 
     $query = $this->db->get();
     return $query->result(); 
 }
-
-
-
 
 
 public function get_article_slug($slug) {
@@ -177,6 +173,7 @@ public function get_archive() {
         articles.created_at, 
         volume.vol_name,
         volume.volumeid,
+        volume.date_at,
         articles.doi, 
         articles.keywords
     ');
@@ -184,8 +181,7 @@ public function get_archive() {
     $this->db->join('article_submission', 'articles.slug = article_submission.slug');
     $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left');
     $this->db->where('volume.isArchive', 1);
-    $this->db->where('articles.isPublished', 1);
-    $this->db->order_by('volume.vol_name', 'ASC'); 
+    $this->db->order_by('volume.date_at', 'DESC'); 
 
     $query = $this->db->get();
     return $query->result(); 
@@ -193,6 +189,7 @@ public function get_archive() {
 
 public function getArticle() {
     $query = $this->db->get('articles');
+    $this->db->order_by('created_at', 'DESC'); 
     return $query->result();
 }
 
@@ -297,7 +294,7 @@ public function get_articles_by_volume($volume_id) {
     $this->db->join('article_author', 'articles.articleid = article_author.articleid', 'left');
     $this->db->where('articles.volumeid', $volume_id);
     $this->db->where('articles.isPublished', 1);
-    $this->db->group_by('articles.articleid'); // Ensure articles are unique
+    $this->db->group_by('articles.articleid');
     $query = $this->db->get();
     return $query->result_array();
 }
@@ -307,7 +304,7 @@ public function get_articles_by_vol($volume_id) {
     $this->db->from('articles');
     $this->db->where('articles.volumeid', $volume_id);
     $this->db->where('articles.isPublished', 1);
-    $this->db->group_by('articles.articleid'); // Ensure articles are unique
+    $this->db->group_by('articles.articleid');
     $query = $this->db->get();
     return $query->result_array();
 }
