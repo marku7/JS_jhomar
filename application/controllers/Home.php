@@ -230,6 +230,7 @@ public function index() {
         $this->load->model('Volume_model');
     
         $data['volume'] = $this->Volume_model->get_volume($volumeid);
+        $vols = $this->Volume_model->getVolumesHome();
     
         if (empty($data['volume'])) {
             show_404();
@@ -255,7 +256,7 @@ public function index() {
         }
     
         $data['title'] = $data['volume']['vol_name'];
-        $data['volumes'] = $this->Volume_model->get_all_volumes();
+        $data['vols'] = $vols;
         $this->load->view('home/volume', $data);
     }
 

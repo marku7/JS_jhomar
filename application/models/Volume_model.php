@@ -76,7 +76,6 @@ class Volume_model extends CI_Model {
     
     public function get_volume($volumeid) {
         $query = $this->db->get_where('volume', array('volumeid' => $volumeid, 'isArchive' => 0));
-        $this->db->order_by('date_at', 'DESC');
         return $query->row_array();
     } 
 

@@ -91,6 +91,7 @@ public function get_article() {
     $this->db->where('articles.isPublished', 1);
     $this->db->where('volume.isArchive', 0);
     $this->db->where('volume.published', 1);
+    $this->db->order_by('created_at', 'DESC'); 
 
     $query = $this->db->get();
     return $query->result(); 
@@ -295,6 +296,7 @@ public function get_articles_by_volume($volume_id) {
     $this->db->where('articles.volumeid', $volume_id);
     $this->db->where('articles.isPublished', 1);
     $this->db->group_by('articles.articleid');
+    $this->db->order_by('articles.created_at', 'DESC');
     $query = $this->db->get();
     return $query->result_array();
 }
@@ -305,11 +307,10 @@ public function get_articles_by_vol($volume_id) {
     $this->db->where('articles.volumeid', $volume_id);
     $this->db->where('articles.isPublished', 1);
     $this->db->group_by('articles.articleid');
+    $this->db->order_by('articles.created_at', 'DESC');
     $query = $this->db->get();
     return $query->result_array();
 }
-
-
 
 public function get_all_articles() {
     $this->db->select('
@@ -332,18 +333,20 @@ public function get_all_articles() {
         MAX(article_submission.slug) AS slug, 
         MAX(authors.author_name) AS author_name, 
         MAX(authors.email) AS author_email, 
-        MAX(volume.vol_name) AS volume_name,
+        MAX(volume.vol_name) AS volume_name
     ');
     $this->db->from('articles');
     $this->db->join('article_author', 'articles.articleid = article_author.articleid');
     $this->db->join('authors', 'article_author.audid = authors.audid');
     $this->db->join('article_submission', 'articles.slug = article_submission.slug');
     $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left');
-    $this->db->where('volume.isArchive', 0);
+    $this->db->where('volume.isArchive', 0); //jhomar
     $this->db->group_by('articles.articleid'); 
+    $this->db->order_by('articles.created_at', 'DESC');
     $query = $this->db->get();
     return $query->result();
 }
+
 
 public function searchArticles($searchQuery) {
     $this->db->like('title', $searchQuery);
