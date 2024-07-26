@@ -75,10 +75,21 @@
             margin-bottom: 10px;
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const textarea = document.getElementById("author");
+            textarea.addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    textarea.value += ", ";
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="container">
-<?php echo validation_errors(); ?>
+    <?php echo validation_errors(); ?>
     <h2>Article Submission Form</h2>
     <form id="articleForm" action="<?php echo base_url('article/submitNow')?>" method="POST" enctype="multipart/form-data">
         <label for="title">Title:</label>
@@ -97,12 +108,8 @@
             <?php endforeach; ?>
         </select>
 
-        <label for="numAuthors">Number of Authors:</label>
-        <input type="number" id="numAuthors" name="num_authors" class="form-control" value="1" min="1" max="50" required>
-
-        <div id="coAuthorsContainer">
-            <!-- Co-author fields will be dynamically added here -->
-        </div>
+        <label for="author">Author/s:</label>
+        <textarea id="author" name="author" class="form-control" rows="5" style="resize: vertical;" required></textarea>
         
         <label for="file">Upload File:</label>
         <input type="file" id="file" name="file" accept=".pdf" class="form-control">
@@ -111,45 +118,5 @@
         <button type="button" class="btn btn-secondary" onclick="window.history.back();">Cancel</button>
     </form>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const numAuthorsInput = document.getElementById('numAuthors');
-    const coAuthorsContainer = document.getElementById('coAuthorsContainer');
-
-    function updateCoAuthorFields() {
-        const numAuthors = parseInt(numAuthorsInput.value, 10);
-        const currentFields = coAuthorsContainer.querySelectorAll('.co-author-field');
-        
-        // Remove existing fields
-        currentFields.forEach(field => field.remove());
-        
-        // Add new fields
-        for (let i = 1; i < numAuthors; i++) { // Start from 1 because the first author is the one who posted
-            const coAuthorField = document.createElement('div');
-            coAuthorField.className = 'co-author-field';
-            coAuthorField.innerHTML = `
-                <label for="coauthor${i}">Co-author ${i}:</label>
-                <select id="coauthor${i}" name="coauthor_id[]" class="form-control" required>
-                    <option value="">Select Co-author</option>
-                    <?php foreach ($authors as $author): ?>
-                        <option value="<?php echo $author['audid']; ?>"><?php echo $author['author_name']; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            `;
-            coAuthorsContainer.appendChild(coAuthorField);
-        }
-    }
-
-    numAuthorsInput.addEventListener('input', function() {
-        if (parseInt(numAuthorsInput.value, 10) > 50) {
-            numAuthorsInput.value = 50;
-        }
-        updateCoAuthorFields();
-    });
-
-    updateCoAuthorFields();
-});
-</script>
 </body>
 </html>

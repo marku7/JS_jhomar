@@ -27,8 +27,8 @@ class Article_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
-    
 
+    
     public function getAuthorByArticleId($articleId) {
         $this->db->select('authors.author_name');
         $this->db->from('article_author');
@@ -99,7 +99,7 @@ public function get_article() {
 
 
 public function get_article_slug($slug) {
-    $this->db->select('articles.articleid, articles.title, articles.slug, articles.abstract, articles.created_at, volume.vol_name, articles.doi, articles.keywords');
+    $this->db->select('articles.articleid, articles.title, articles.slug, articles.abstract, articles.created_at, volume.vol_name, articles.doi, articles.keywords, articles.author');
     $this->db->from('articles');
     $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left');
     $this->db->where('articles.slug', $slug);
@@ -290,7 +290,7 @@ public function getAuthorsByArticleIds($article_ids) {
 }
 
 public function get_articles_by_volume($volume_id) {
-    $this->db->select('articles.articleid, articles.title, articles.slug, articles.abstract, articles.created_at');
+    $this->db->select('articles.articleid, articles.title, articles.slug, articles.abstract, articles.created_at, articles.author');
     $this->db->from('articles');
     $this->db->join('article_author', 'articles.articleid = article_author.articleid', 'left');
     $this->db->where('articles.volumeid', $volume_id);
@@ -302,7 +302,7 @@ public function get_articles_by_volume($volume_id) {
 }
 
 public function get_articles_by_vol($volume_id) {
-    $this->db->select('articles.articleid, articles.title, articles.slug, articles.abstract, articles.created_at, articles.doi, articles.keywords');
+    $this->db->select('articles.articleid, articles.title, articles.slug, articles.abstract, articles.created_at, articles.doi, articles.keywords, articles.author');
     $this->db->from('articles');
     $this->db->where('articles.volumeid', $volume_id);
     $this->db->where('articles.isPublished', 1);
@@ -340,12 +340,33 @@ public function get_all_articles() {
     $this->db->join('authors', 'article_author.audid = authors.audid');
     $this->db->join('article_submission', 'articles.slug = article_submission.slug');
     $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left');
-    $this->db->where('volume.isArchive', 0); //jhomar
+    $this->db->where('volume.isArchive', 0); 
     $this->db->group_by('articles.articleid'); 
     $this->db->order_by('articles.created_at', 'DESC');
     $query = $this->db->get();
     return $query->result();
 }
+public function get_all_articles2() {
+    $this->db->select('
+        articles.articleid, 
+        articles.title AS title, 
+        articles.keywords AS keywords, 
+        articles.abstract AS abstract, 
+        articles.isPublished AS isPublished, 
+        articles.filename AS filename, 
+        articles.author AS author_name, 
+        volume.vol_name AS volume_name,
+        articles.created_at AS created_at
+    ');
+    $this->db->from('articles');
+    $this->db->join('volume', 'articles.volumeid = volume.volumeid', 'left');
+    $this->db->where('volume.isArchive', 0); 
+    $this->db->order_by('articles.created_at', 'DESC');
+    $query = $this->db->get();
+    return $query->result();
+}
+
+
 
 
 public function searchArticles($searchQuery) {

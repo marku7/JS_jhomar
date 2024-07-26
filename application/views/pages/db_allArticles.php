@@ -106,37 +106,39 @@
                 <th>Title</th>
                 <th>File</th>
                 <th>Keywords</th>
-                <th>Date Published</th>
+                <th>Date Created</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="actions">
-                    <a href="<?php echo base_url('pages/db_authSubmission2') ?>" class="btn btn-darkgreen text-blue"><strong>ADD ARTICLE</strong></a>
-                </td>
-            </tr>
-            <?php foreach ($submittedArticles as $article): ?>
-                <tr>
-                    <td class="actions">
-                        <a href="<?= base_url('pages/db_AdminUpdate/' . $article->slug); ?>" class="btn-assign-evaluator">Edit</a><br><br>
-                        <a href="<?= base_url('pages/editArticle/' . $article->articleid); ?>" class="btn-update" style="background-color: #28a745; border-color: #28a745;">Update</a><br><br>
-                        <a href="#" onclick="confirmDelete('<?= $article->articleid; ?>')" class="btn btn-danger btn-delete" style="background-color: #dc3545; border-color: #dc3545;">Delete</a>
-                    </td>
-                    <td><?= implode(', ', $article->author_names) ?></td>
-                    <td><?= $article->volume_name ?></td>
-                    <td><?= strlen($article->title) > 20 ? substr($article->title, 0, 20) . '...' : $article->title ?></td>
-                    <td>
-                        <?php if ($article->filename): ?>
-                            <a href="<?= base_url('files/' . $article->filename); ?>" class="file-link">View</a>
-                        <?php else: ?>
-                            No file uploaded
-                        <?php endif; ?>
-                    </td>
-                    <td><?= strlen($article->keywords) > 20 ? substr($article->keywords, 0, 20) . '...' : $article->keywords ?></td>
-                    <td><?= $article->date_published ? date('Y-m-d', strtotime($article->date_published)) : 'N/A' ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
+    <tr>
+        <td class="actions">
+            <a href="<?php echo base_url('pages/db_authSubmission2') ?>" class="btn btn-darkgreen text-blue"><strong>ADD ARTICLE</strong></a>
+        </td>
+    </tr>
+    <?php foreach ($submittedArticles as $article): ?>
+        <tr>
+            <td class="actions">
+                <a href="<?= base_url('pages/db_AdminUpdate/' . $article->articleid); ?>" class="btn-assign-evaluator">Edit</a><br><br>
+                <a href="<?= base_url('pages/editArticle/' . $article->articleid); ?>" class="btn-update" style="background-color: #28a745; border-color: #28a745;">Update</a><br><br>
+                <a href="#" onclick="confirmDelete('<?= $article->articleid; ?>')" class="btn btn-danger btn-delete" style="background-color: #dc3545; border-color: #dc3545;">Delete</a>
+            </td>
+            <td><?= $article->author_name ?></td> <!-- Display author name from articles table -->
+            <td><?= $article->volume_name ?></td>
+            <td><?= strlen($article->title) > 20 ? substr($article->title, 0, 20) . '...' : $article->title ?></td>
+            <td>
+                <?php if ($article->filename): ?>
+                    <a href="<?= base_url('files/' . $article->filename); ?>" class="file-link">View</a>
+                <?php else: ?>
+                    No file uploaded
+                <?php endif; ?>
+            </td>
+            <td><?= strlen($article->keywords) > 20 ? substr($article->keywords, 0, 20) . '...' : $article->keywords ?></td>
+            <td><?= $article->created_at ? date('Y-m-d', strtotime($article->created_at)) : 'N/A' ?></td>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
+
+
     </table>
 </div>
 

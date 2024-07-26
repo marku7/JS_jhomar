@@ -127,10 +127,7 @@
                         Author/s:
                             <span class="meta">
                                 <small>
-                                    <?php foreach ($article['authors'] as $author_name): ?>
-                                        <a href="#!"><?php echo $author_name; ?></a><br>
-                                    <?php endforeach; ?>
-                                    Published On: <?php echo date('F d, Y', strtotime($article['created_at'])); ?>
+                                <?php echo $article['author']; ?>
                                 </small>
                             </span>
                         </p>

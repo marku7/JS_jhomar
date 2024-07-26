@@ -128,10 +128,11 @@
                                             <?php echo isset($article['abstract']) && strlen($article['abstract']) > 100 ? substr($article['abstract'], 0, 100) . '...' : $article['abstract']; ?>
                                         </h3>
                                         <p class="post-meta">
-                                            Author/s:
-                                            <?php echo implode(', ', $article['authors']); ?><br>
-                                            Published on: <?php echo date('F d, Y', strtotime($article['created_at'])); ?>
-                                        </p>
+                                        Author/s:
+                                        <i><?php echo $article['author']; ?></i><br>
+                                        Published on: <?php echo date('F d, Y', strtotime($article['created_at'])); ?>
+                                    </p>
+
                                     </div>
                                 </a>
                                 <div class="d-flex justify-content-end mb-4">
