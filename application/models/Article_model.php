@@ -194,14 +194,9 @@ public function getArticle() {
     return $query->result();
 }
 
-
-
-// Model: Article_model.php
 public function updateArticle($data, $slug) {
     $this->db->where('slug', $slug);
-    $this->db->update('articles', $data);
-
-    
+    $this->db->update('articles', $data);   
 }
 
 
@@ -349,6 +344,7 @@ public function get_all_articles() {
 public function get_all_articles2() {
     $this->db->select('
         articles.articleid, 
+        articles.slug, 
         articles.title AS title, 
         articles.keywords AS keywords, 
         articles.abstract AS abstract, 
@@ -365,8 +361,6 @@ public function get_all_articles2() {
     $query = $this->db->get();
     return $query->result();
 }
-
-
 
 
 public function searchArticles($searchQuery) {

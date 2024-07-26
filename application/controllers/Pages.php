@@ -492,7 +492,7 @@ class Pages extends Base_Controller {
                 'title' => $this->input->post('title'),
                 'keywords' => $this->input->post('keywords'),
                 'abstract' => $this->input->post('abstract'),
-                'volumeid' => $this->input->post('volume_id'), // Add volume_id here
+                'volumeid' => $this->input->post('volume_id'),
             );
     
             if (!empty($_FILES["new_file"]["name"])) {
@@ -501,7 +501,7 @@ class Pages extends Base_Controller {
     
             $this->Article_model->updateArticle($data, $slug);
     
-            // Update article_submission table
+          
             $submission_data = array(
                 'title' => $this->input->post('title'),
                 'filename' => (!empty($_FILES["new_file"]["name"])) ? $config['file_name'] : null,

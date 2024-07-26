@@ -118,7 +118,7 @@
     <?php foreach ($submittedArticles as $article): ?>
         <tr>
             <td class="actions">
-                <a href="<?= base_url('pages/db_AdminUpdate/' . $article->articleid); ?>" class="btn-assign-evaluator">Edit</a><br><br>
+                <a href="<?= base_url('pages/db_AdminUpdate/' . $article->slug); ?>" class="btn-assign-evaluator">Edit</a><br><br>
                 <a href="<?= base_url('pages/editArticle/' . $article->articleid); ?>" class="btn-update" style="background-color: #28a745; border-color: #28a745;">Update</a><br><br>
                 <a href="#" onclick="confirmDelete('<?= $article->articleid; ?>')" class="btn btn-danger btn-delete" style="background-color: #dc3545; border-color: #dc3545;">Delete</a>
             </td>
